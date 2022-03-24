@@ -124,3 +124,40 @@ plot(L2011$B2_sre, col=clg)
 plot(L2011$B3_sre, col=clr)
 plot(L2011$B4_sre, col=clnir)
 dev.off()
+
+# Plotto lo schema RGB
+# Sovrappongo la banda del rosso, del verde e del blu 
+plotRGB(L2011, r=3, g=2, b=1, stretch="lin")
+# Voglio utilizzare la danda NIR (per avere una risoluzione infrarossa)
+# Aumento di 1 i valori di r, g e b, escludendo la banda del blu
+plotRGB(L2011, r=4, g=3, b=2, stretch="lin")
+# Cambio di nuovo la combinazione r g b mettendo l'infrarosso  nel "g" e otterrò un immagine fluorescente
+plotRGB(L2011, r=3, g=4, b=2, stretch="lin")
+# Visualizzo meglio le zone di suolo nudo inserendo la banda del NIR nel "b"
+plotRGB(L2011, r=3, g=2, b=4, stretch="lin")
+
+#
+plotRGB(L2011, r=3, g=4, b=2, stretch="hist")
+
+# Costruisco un multiframe 
+# Sopra metto la scala del visibile RGB (linear stretch)
+# Sotto metto la scala del RGB con all'interno il NIR (histogram streatch)
+par(mfrow=c(2,1))
+plotRGB(L2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(L2011, r=3, g=4, b=2, stretch="hist")
+
+# Carico l'immagine del 1988
+L1988 <- brick("p224r63_1988.grd")
+
+# Chiamo l'oggetto per visualizzare le sue informazioni
+L1988
+
+# Plotto l'immagine
+plot(L1988)
+
+# Costruisco un multiframe 
+# Sopra metto l'immagine del 1988 con la scala.... (linear stretch)
+# Sotto metto l'immagine del 2011 con la scala....(linear stretch)
+par(mfrow=c(2,1))
+plotRGB(L1988, r=4, g=3, b=2, stretch="lin")
+plotRGB(L2011, r=4, g=3, b=2, stretch="lin")
