@@ -39,14 +39,17 @@ plotRGB(L2006, r=1, g=2, b=3, stretch="lin")
 dev.off()
 
 # Calcolo il difference vegetation index (differenza tra le riflettanze nel NIR e ner rosso)
-
+# Il calcolo lo faccio sia per il 1992 che per il 2006
 # 1992
 dvi1992 <- L1992$defor1.1 - L1992$defor1.2
 
+# Chiamo l'oggetto per visualizzarne le informazioni
 dvi1992
 
+# Plotto il DVI del 1992
 plot(dvi1992)
 
+# Creo una nuova scala colori per miglirare la visualizzazione
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
 plot(dvi1992, col=cl, main="DVI at 1992")
