@@ -4,15 +4,11 @@
 # Carico il pacchetto raster
 library(raster)
 # Carico il pacchetto RStoolbox che serve per calcolare l'indice della vegetazione
-#library(RStoolbox)
+library(RStoolbox)
 # Installo il pacchetto rasterdiv
 #install.packages("rasterdiv")
 # Carico il pacchetto rasterdiv che serve per...
-#library(rasterdiv) # for the worldwide NDVI
-# Installo il pacchetto rasterVis
-#install.packages("rasterVis")
-# Carico il pacchetto rasterVis per...
-#library(rasterVis)
+library(rasterdiv) # for the worldwide NDVI
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/") # Comando per Windows users
