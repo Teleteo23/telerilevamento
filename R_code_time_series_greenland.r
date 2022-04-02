@@ -15,7 +15,7 @@ library(rasterVis)
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/greenland") # Windows 
 
-# Assegno a degli oggetti le funzioni per importare le immagini che verranno utilizzate
+# Assegno a degli oggetti la funzione "raster" necessaria per importare le immagini che verranno utilizzate
 Lst_2000 <- raster("lst_2000.tif")
 Lst_2005 <- raster("lst_2005.tif")
 Lst_2010 <- raster("lst_2010.tif")
@@ -43,7 +43,7 @@ plot(Lst_2015, col=cl)
 
 # Metodo per importare contemporaneamente tutte le immagini 
 # Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
-# "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune
+# "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune (in questo caso "lst")
 rlist <- list.files(pattern="lst")
 # Visualizzo i files all'interno della mia lista
 rlist
@@ -57,6 +57,7 @@ import
 TGr <- stack(import)
 # Visualizzo il nuovo file
 TGr
+
 # Plotto il nuovo file
 plot(TGr, col=cl)
 dev.off()
