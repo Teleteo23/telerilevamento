@@ -1,7 +1,8 @@
 # Questo è il quarto script che useremo a lezione
 
 # R code for chemical cycling study
-# time series of NO2 change in Europe during the lockdown
+# Time series of NO2 change in Europe during the lockdown
+# Siti da cui sono stati presi i dati:
 # https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe
 # https://acp.copernicus.org/preprints/acp-2020-995/acp-2020-995.pdf
 
@@ -13,7 +14,6 @@ library(raster)
 setwd("C:/lab/EN") # Windows 
 
 # Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
-# "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune
 rlist <- list.files(pattern="EN")
 # Visualizzo i files all'interno della mia lista
 rlist
@@ -27,8 +27,9 @@ import
 ENr <- stack(import)
 # Visualizzo il nuovo file
 ENr
+
 # Plotto il nuovo file
 # Creo una nuova scala colori per miglirare la visualizzazione
 cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
 plot(ENr, col=cl)
-dev.off()
+#dev.off()
