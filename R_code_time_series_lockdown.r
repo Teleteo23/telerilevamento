@@ -80,3 +80,11 @@ cldif <- colorRampPalette(c('blue','white','red'))(100)
 plot(difEN, col=cldif)
 # Il rosso è Gennaio e il blu è Marzo
 dev.off()
+
+# Faccio un plot RGB con tre immagnini unite assieme (Gennaio, Febbraio, Marzo)
+plotRGB(ENs, r=1, g=7, b=13, stretch="lin")
+plotRGB(ENs, r=1, g=7, b=13, stretch="hist")
+dev.off()
+
+# Attraverso la funzione "source" richiamo un codice esterno al mio script
+source("R_inputcode.r")
