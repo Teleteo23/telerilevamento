@@ -5,13 +5,28 @@
 # https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe
 # https://acp.copernicus.org/preprints/acp-2020-995/acp-2020-995.pdf
 
-# Carico e/o installo una serie di pacchetti che verranno utilizzati nello script
 # Carico il pacchetto raster
 library(raster)
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/EN") # Windows 
 
+# Utilizzo la funzione "raster" per importare la prima immagine della time series e la assegno ad un oggetto
+EN01 <- raster("EN_0001.png") # 29/01/20
+# Chiamo l'oggetto per visualizzarne le informazioni
+EN01
+
+# Plotto i valori di NO2 di Gennaio con una scala colori che ne migliora la visualizzazione
+cl <- colorRampPalette(c('red','orange','yellow'))(100) 
+plot(EN01, col=cl)
+dev.off()
+
+# Importo l'immagine dei valori di NO2 di fine Marzo e la plotto
+EN13 <- raster("EN_0013.png")
+plot(EN13, col=cl)
+dev.off()
+
+# Per caricare e visualizzare tutti i files della cartella in maniera rapida utilizzo il seguente metodo:
 # Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
 # "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune
 rlist <- list.files(pattern="EN")
@@ -34,45 +49,34 @@ cls <- colorRampPalette(c("blue","light blue","pink","red"))(100)
 plot(ENs, col=cls)
 dev.off()
 
-#*
--------------------
-# SISTEMARE QUESTA PARTE DI CODICE E  INSERIRLA ALL'INIZIO DELLO SCRIPT
-EN01 <- raster("EN_0001.png")
-cl <- colorRampPalette(c('red','orange','yellow'))(100) # 
-
-# plot the NO2 values of January 29/01/20 by the cl palette
-plot(EN01, col=cl)
-
-# import the end of March NO2 and plot it
-EN13 <- raster("EN_0013.png")
-plot(EN13, col=cl)
-dev.off()
-
-# *
-# plotto la prima e l'ultima immagine insieme
-# metodo 1
-# Build a multiframe window with 2 rows and 1 column with the par function
+# Voglio plottare la prima e l'ultima immagine insieme
+# Per farlo posso usare diversi metodi
+# Metodo 1
+# Costruisco un multiframe chiamando gli oggetti che ho creato all'inizio dello script
 par(mfrow=c(2,1))
 plot(EN01, col=cl)
 plot(EN13, col=cl)
 dev.off()
 
-# metodo 2
-# plot the images from the stack
+# Metodo 2
+# Plotto le immagini dallo stack chiamando gli oggetti che mi interessano
 par(mfrow=c(2,1))
 plot(ENs$EN_0001, col=cl)
 plot(ENs$EN_0013, col=cl)
 dev.off()
 
-# metodo 3
-# facico uno stack co solo i due elementi che mi servono
+# Metodo 3
+# Facico uno stack con solo i due elementi che mi servono e li plotto
 EN113 <- stack(ENs[[1]], ENs[[13]])
-plot(EN113)
+plot(EN113, col=cl)
 dev.off()
 
-# faccio la differenza tra il primo e il tredicesimo elemento
+# Faccio la differenza tra il primo e il tredicesimo elemento
+# In questo modo vedo la variazione di NO2 durante il lockdown
 difEN <- ENs[[1]] - ENs[[13]]
-cldif <- colorRampPalette(c('blue','white','red'))(100) #
+# Creo una nuova scala colori per miglirare la visualizzazione
+cldif <- colorRampPalette(c('blue','white','red'))(100) 
+# Plotto la differenza appena calcolata
 plot(difEN, col=cldif)
-# il rosso è gennaio e il blu è marzo
+# Il rosso è Gennaio e il blu è Marzo
 dev.off()
