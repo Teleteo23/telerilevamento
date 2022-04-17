@@ -1,16 +1,21 @@
-# questo è il primo script che useremo a lezione
+# Questo è il primo script che useremo a lezione
 
+# Installo il pacchetto "raster", utile a lavorare su file in formato raster
 # Install.packages ("raster")
+# Richiamo il pacchetto
 library(raster)
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/") # Comando per Windows users
 
-# Assegno ad un'oggetto la funzione per importare la prima immagine che verrà utilizzata
+# Assegno ad un'oggetto la funzione "brick" per importare la prima immagine che verrà utilizzata
+# Le "" vengono usate per richiamare qualcosa dall'esterno di R
 L2011 <- brick("p224r63_2011.grd")
 
 # Chiamo l'oggetto (raster brick) per visualizzare le sue informazioni
 L2011
+# Si aprono gli attributi di dato raster (dimensioni, sorgente, classe, ecc.)
+# Il file caricato è un raster brick, ovvero una serie di bande sovrapposte
 
 # Plotto l'immagine
 plot(L2011)
@@ -20,7 +25,10 @@ plot(L2011)
 # Assegno il tutto ad una variabile 
 cl <- colorRampPalette(c("black","grey","light grey")) (100) 
 # Plotto di nuovo l'immagine richiamando anche la nuova scala di colori
+# "col" serve per definire i colori
 plot(L2011, col=cl)
+# Chiudo la finestra grafica in modo da partire da zero con l prossima immagine
+dev.off()
 
 # Legenda delle mappe plottate
 # Landsat ETM+
@@ -44,13 +52,15 @@ plot(L2011$B1_sre) # "Trinity"
 # Metodo 2
 # Utilizzando la doppia parentesi quadra richiamo un elemento (in questo caso il primo)
 plot(L2011[[1]]) # "Neo"
+
 # Plotto "Trinity" inserendo la scala colori "cl"
 plot(L2011$B1_sre, col=cl)
 
-# Plotto trinity inserendo una scala di colori diversa che va dal dark blue al blue al light blue
+# Plotto "Trinity" inserendo una scala di colori diversa che va dal dark blue al blue al light blue
 # Assegno ad una variabile "clb" il vettore della scala di colori che ho scelto dicendo quanti passaggi di colore si devono fare (100)
 clb <- colorRampPalette(c("dark blue", "blue", "light blue")) (100) 
 plot(L2011$B1_sre, col=clb)
+dev.off()
 
 # Esporto l'immagine in formato pdf e la salvo nella cartella lab
 pdf("banda1.pdf")
@@ -67,10 +77,10 @@ dev.off()
 clg <- colorRampPalette(c("dark green", "green", "light green")) (100) 
 plot(L2011$B2_sre, col=clg)
 
-# Creo un multiframe con all'interno la banda del blu e la banda del verde
-# Apro una finestra composta da una riga e due colonne
+# Creo un multiframe "mf" composto da unna riga "row e due colonne" salvandole in un vettore "c"
+# Se non facessimo questo una volta plottata la banda 2 ci cancella il plot precedente della banda 1
 par(mfrow=c(1,2))
-# Inserisco i plot della banda 1 e della banda 2
+# Inserisco i plot della banda 1 (del blu) e della banda 2 (del verde)
 plot(L2011$B1_sre, col=clb)
 plot(L2011$B2_sre, col=clg)
 dev.off()
@@ -83,7 +93,7 @@ plot(L2011$B1_sre, col=clb)
 plot(L2011$B2_sre, col=clg)
 dev.off()
 
-# Creo un secondo multiframe con all'interno la banda del blu e la banda del verde
+# Creo un secondo multiframe con all'interno sempre la banda del blu e la banda del verde
 # Apro una finestra composta da due righe e una colonna
 par(mfrow=c(2,1))
 # Inserisco i plot della banda 1 e della banda 2
@@ -102,7 +112,7 @@ dev.off()
 # Creo un terzo multiframe con all'interno la banda del blu, del verde, del rosso e dell'infrarosso vicino
 # Apro una finestra composta da due righe e due colonne
 par(mfrow=c(2,2))
-# Inserisco i plot della banda 1 e della banda 2
+# Inserisco i plot delle 4 bande
 # Blue
 plot(L2011$B1_sre, col=clb)
 # Green 
@@ -114,6 +124,7 @@ plot(L2011$B3_sre, col=clr)
 # NIR
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
 plot(L2011$B4_sre, col=clnir) 
+dev.off()
 
 # Esporto il multiframe in formato pdf e la salvo nella cartella lab
 pdf("multiframe3.pdf")
@@ -125,18 +136,28 @@ plot(L2011$B3_sre, col=clr)
 plot(L2011$B4_sre, col=clnir)
 dev.off()
 
+# Schema RGB: ogni schermo utilizza il rosso, il verde e il blu, che mischiandosi generano tutti gli altri colori per generare le immagini con colori "naturali"
+# Nello schema RGB posso utilizzare tre bande per volta
 # Plotto lo schema RGB
-# Sovrappongo la banda del rosso, del verde e del blu 
+# Sovrappongo la banda del rosso(3), del verde(2) e del blu(1), con questo schema possiamo visualizzare le immagini con colori naturali
 plotRGB(L2011, r=3, g=2, b=1, stretch="lin")
+# Con "stretch" prendiamo le bande e le allunghiamo in modo da non visualizzare meglio una banda a discapito di un'altra, in modo da schiacciare i valori
+# Con questo formato di colori risulta difficile distinguere forme da altre
+# Non mettiamo "B1_sre" perché la funzione è progettata per usare direttamente il numero del layer invece del nome della banda, quindi mettiamo direttamente in che punto del nostro pacchetto è la banda corrispondente
+
 # Voglio utilizzare la danda NIR (per avere una risoluzione infrarossa)
 # Aumento di 1 i valori di r, g e b, escludendo la banda del blu
 plotRGB(L2011, r=4, g=3, b=2, stretch="lin")
-# Cambio di nuovo la combinazione r g b mettendo l'infrarosso  nel "g" e otterrò un immagine fluorescente
+# Siccome nella componente "red" abbiamo montato l'infrarosso, la vegetazione ha altissima riflettanza in questa banda (in questo modo la vegetazione diventa rossa)
+
+# Cambio di nuovo la combinazione r g b mettendo l'infrarosso  nel "g" e otterrò un immagine "fluorescente"
 plotRGB(L2011, r=3, g=4, b=2, stretch="lin")
+# Si vedono pattern che prima non erano visibili all'interno della foresta, il viola invece rappresenta sempre suolo nudo visualizzando bene la componente agricola
+
 # Visualizzo meglio le zone di suolo nudo inserendo la banda del NIR nel "b"
 plotRGB(L2011, r=3, g=2, b=4, stretch="lin")
 
-#
+# Esiste un altro tipo di stretch che è l'"histogram", invece di fare il profilo lineare, questa funzione allunga ancora di più la banda, ha una potenza media più alta
 plotRGB(L2011, r=3, g=4, b=2, stretch="hist")
 
 # Costruisco un multiframe 
