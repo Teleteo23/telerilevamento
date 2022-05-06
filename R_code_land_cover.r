@@ -8,15 +8,12 @@ library(RStoolbox)
 #install.packages("ggplot2")
 # Carico il pacchetto ggplot2
 library(ggplot2)
-# Installo il pacchetto gridExtra
-#install.packages("gridExtra")
 # Carico il pacchetto gridExtra
 library(gridExtra)
 # Installo il pacchetto patchwork
 #install.packages("patchwork")
 # Carico il pacchetto patchwork
 library(patchwork)
-
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/") # Windows 
