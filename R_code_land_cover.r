@@ -91,7 +91,63 @@ freq(L92c$map)
 # Pixels classe 1: 307021
 # Pixels classe 2: 34271
 
+# Pixels totali
+tot92 <- 307021+34271
+tot92
+# Proporzione della foresta
+prop_forest92 <- 307021/tot92
+prop_forest92
+# Percentuale della foresta
+perc_forest92 <- 307021*100/tot92
+perc_forest92
+# Percentuale della porzione agricola
+perc_agr92 <- 34271*100/tot92
+perc_agr92
+# Percentuale della foresta: 89.95845
+# Percentuale della porzione agricola: 10.04155
+
+
 # Calcolo la frequenza di pixel appartenenti rispettivamente alla classe della foresta (classe 1) e alla classe agricolo+acqua (classe2)
 freq(L06c$map)
 # Pixels classe 1: 178699
 # Pixels classe 2: 164027
+
+# Pixels totali
+tot06 <- 178699+164027
+tot06
+# Proporzione della foresta
+prop_forest06 <- 178699/tot06
+prop_forest06
+# Percentuale della foresta
+perc_forest06 <- 178699*100/tot06
+perc_forest06
+# Percentuale della porzione agricola
+perc_agr06 <- 164027*100/tot06
+perc_agr06
+# Percentuale della foresta: 52.14049
+# Percentuale della porzione agricola: 47.85951
+
+# DATI FINALI:
+# Percentuale della foresta 92: 89.95845
+# Percentuale della porzione agricola 92: 10.04155
+# Percentuale della foresta 06: 52.14049
+# Percentuale della porzione agricola 06: 47.85951
+
+# Creo un data frame con tre colonne
+# La prima colonna sarà la classe, la seconda i valori percentuali del 92 e la terza i valori percentuali del 06
+class <- c("Forest","Agriculture")
+percent_1992 <- c(89.95, 10.05)
+percent_2006 <- c(52.15, 47.85)
+multitemporal <- data.frame(class, percent_1992, percent_2006)
+multitemporal
+View(multitemporal)
+
+# Plotto il data frame
+PL1 <- ggplot(multitemporal, aes(x=class, y=percent_1992, color=class)) + geom_bar(stat="identity", fill="black")
+PL2 <- ggplot(multitemporal, aes(x=class, y=percent_2006, color=class)) + geom_bar(stat="identity", fill="white")
+grid.arrange(PL1, PL2, nrow=1)
+
+# Salvo in pdf il data frame
+pdf("data_frame")
+grid.arrange(PL1, PL2, nrow=1)
+dev.off()
