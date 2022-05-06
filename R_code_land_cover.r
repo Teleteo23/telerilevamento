@@ -13,7 +13,7 @@ library(ggplot2)
 # Carico il pacchetto gridExtra
 library(gridExtra)
 # Installo il pacchetto patchwork
-install.packages("patchwork")
+#install.packages("patchwork")
 # Carico il pacchetto patchwork
 library(patchwork)
 
