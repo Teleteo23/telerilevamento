@@ -1,0 +1,165 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+
+\usetheme{Frankfurt}
+\usecolortheme{crane}
+
+\title{Esame Telerilevamento Geoecologico}
+\author{Matteo Barbero}
+\institute{Alma Mater Studiorum - University of Bologna\\}
+\date{22 Giugno 2022}
+\logo{\includegraphics[height=1cm]{logo.png}}
+
+
+\begin{document}
+
+\maketitle
+
+\AtBeginSection[]
+{
+\begin{frame}
+\frametitle{Indice}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+\AtBeginSubsection[] {
+    \begin{frame}
+    \frametitle{Indice} 
+    \tableofcontents[currentsubsection]  
+    \end{frame}
+}
+
+\section{Scopo del progetto}
+
+\begin{frame}{Scopo del progetto}
+\begin{itemize}
+    \item  Mostrare il cambiamento "dell'uso del suolo" in una porzione di territorio all'interno della pianura padana.
+\end{itemize}
+\end{frame}
+
+
+\section{Inquadramento geografico}
+
+\begin{frame}{Inquadramento geografico}
+    \includegraphics[width=1\textwidth]{0-area.jpg}
+    \centering
+\end{frame}
+
+
+\section{Metodi di analisi}
+
+\begin{frame}{Metodi di analisi}
+\begin{itemize}
+    \item Preparazione iniziale delle immagini
+    \item \pause Land cover
+    \item \pause La classificazione dell'immagine
+\end{itemize}    
+\end{frame}
+
+
+\subsection{Preparazione iniziale delle immagini}
+\begin{frame}{1984}
+    \includegraphics[width=1\textwidth]{1-H1984.jpg}
+    \centering
+\end{frame}
+
+\begin{frame}{2022}
+    \includegraphics[width=1\textwidth]{2-H2022.jpg}
+    \centering
+\end{frame}
+
+
+\subsection{Land cover}
+
+\begin{frame}{Land cover}
+    \begin{itemize}
+        \item il land cover è....
+        \item DVI
+        \item NDVI
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Script usato}
+    \lstinputlisting[language=R]{}
+\end{frame}
+
+\begin{frame}{DVI}
+    \includegraphics[width=0.5\textwidth]{3-dvi1.jpg}
+    1984
+    \centering
+    \includegraphics[width=0.5\textwidth]{4-dvi2.jpg}
+    2022
+    \centering
+\end{frame}
+
+\begin{frame}{DIFDVI}
+    \includegraphics[width=1\textwidth]{5-difdvi.jpg}
+    \centering
+\end{frame}
+
+\begin{frame}{NDVI}
+    \includegraphics[width=0.5\textwidth]{6-ndvi1.jpg}
+    \centering
+    \includegraphics[width=0.5\textwidth]{7-ndvi2.jpg}
+    \centering
+\end{frame}
+
+\begin{frame}{DIFNDVI}
+    \includegraphics[width=1\textwidth]{8-difndvi.jpg}
+    \centering
+\end{frame}
+
+
+\subsection{Classificazione}
+
+\begin{frame}{Classificazione}
+\begin{itemize}
+    \item la classificazione è....
+    \item ....
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Script usato}
+    \lstinputlisting[language=R]{}
+\end{frame}
+
+\begin{frame}{Immagine 1984 classificata}
+    \includegraphics[width=1\textwidth]{9-class1984.jpg}
+    \centering
+1-Altro 2-Foresta 3-Agricoltura 4-Acqua
+\end{frame}
+
+\begin{frame}{Immagine 2022 classificata}
+    \includegraphics[width=1\textwidth]{10-class2022.jpg}
+    \centering
+    1-Acqua 2-Altro 3-Foresta 4-Agricoltura
+\end{frame}
+
+\begin{frame}{Istogramma delle classificazioni}
+    \includegraphics[width=1\textwidth]{11-histo.jpg}
+    \centering
+\end{frame}
+
+\begin{frame}{Tabella con le percentuali}
+    \includegraphics[width=1\textwidth]{13-tabella.jpg}
+    \centering
+\end{frame}
+
+
+\section{Conclusioni}
+
+\begin{frame}{Conclusioni}
+    In conclusione.....
+\end{frame}
+
+\begin{frame}{Conclusioni}
+ 
+\begin{Huge}
+GRAZIE PER L'ATTENZIONE
+\end{Huge}
+\end{frame}
+
+\end{document}
