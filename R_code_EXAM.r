@@ -19,10 +19,10 @@ plot(I1984)
 plotRGB(I1984, r=1, g=2, b=4, stretch="lin") #NIR
 
 
+
 jpeg("H1984.jpg", 600, 800)
 plotRGB(I1984, r=1, g=2, b=4, stretch="lin")
 dev.off()
-
 
 # 2022
 
@@ -38,7 +38,6 @@ jpeg("H2022.jpg", 600, 800)
 plotRGB(I2022, r=2, g=3, b=4, stretch="lin")
 dev.off()
 
-
 # Chiamo le immagini appena salvate e le plotto
 
 H1984 <- brick("H1984.jpg")
@@ -52,6 +51,8 @@ H2022
 plot(H2022)
 plotRGB(H2022, 1, 2, 3)
 
+
+
 ## DVI
 
 dvi1<- H1984$H1984.1 - H1984$H1984.2
@@ -63,6 +64,9 @@ dvi2<- H2022$H2022.1 - H2022$H2022.2
 dvi2
 plot(dvi2, col=cl)
 
+par(mfrow=c(2,1))
+plot(dvi1, col=cl)
+plot(dvi2, col=cl)
 
 difdvi<- dvi1-dvi2
 cld <- colorRampPalette(c('blue','white','red'))(100) 
@@ -78,9 +82,17 @@ jpeg("dvi2.jpg", 600, 400)
 plot(dvi2, col=cl)
 dev.off()
 
+jpeg("pardvi.jpg", 600, 800)
+par(mfrow=c(2,1))
+plot(dvi1, col=cl)
+plot(dvi2, col=cl)
+dev.off()
+
 jpeg("difdvi.jpg", 600, 400)
 plot(difdvi, col=cld)
 dev.off()
+
+
 
 ## NDVI
 #(NIR-RED)/(NIR+RED)
@@ -90,6 +102,11 @@ plot(ndvi1,col=cl)
 
 ndvi2<-dvi2/(H2022$H2022.1 + H2022$H2022.2)
 plot(ndvi2,col=cl)
+
+par(mfrow=c(2,1))
+plot(ndvi1, col=cl)
+plot(ndvi2, col=cl)
+
 
 difndvi<-ndvi1-ndvi2
 plot(difndvi,col=cld)
@@ -104,20 +121,28 @@ jpeg("ndvi2.jpg", 600, 400)
 plot(ndvi2, col=cl)
 dev.off()
 
+jpeg("parndvi.jpg", 600, 800)
+par(mfrow=c(2,1))
+plot(ndvi1, col=cl)
+plot(ndvi2, col=cl)
+dev.off()
+
 jpeg("difndvi.jpg", 600, 400)
 plot(difndvi,col=cld)
 dev.off()
 
+
+
 ## Classificazione
 
-set.seed(1)
+
 class1984<- unsuperClass(H1984, nClasses=4)
 class1984
 # classi: bosco, terreno agricolo, acqua, zone urbanizzate
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(class1984$map, col=cl)
 
-set.seed(1)
+
 class2022<- unsuperClass(H2022, nClasses=4)
 class2022
 # classi: bosco, terreno agricolo, acqua, zone urbanizzate
@@ -138,61 +163,46 @@ dev.off()
 freq(class1984$map)
 freq(class2022$map)
 
-# frequenza class1984
-# Classe 1: 63787 (Altro)
-# Classe 2: 75576 (Foresta)
-# Classe 3: 38511 (Agrocoltura)
-# Classe 4: 57738 (Acqua)
-# frequenza class2022
-# Classe 1: 27517 (Acqua)
-# Classe 2: 76116 (Altro)
-# Classe 3: 67325 (Foresta)
-# Classe 4: 65647 (Agricoltura)
 
 tot1984 <- 38511 + 57738 + 75576 + 63787
 tot2022 <- 65647 + 27517 + 67325 + 76116
 
 tot1984
-# 235612
 tot2022
-# 236605
 
 
 perc_forest1984 <- 75576*100/tot1984
 perc_forest2022 <- 67325*100/tot2022
 perc_forest1984
-# 32.07646
 perc_forest2022
-# 28.4546
+
 
 perc_agric1984 <- 38511*100/tot1984
 perc_agric2022 <- 65647*100/tot2022
 perc_agric1984
-# 16.34509
 perc_agric2022
-# 27.7454
+
 
 perc_acqua1984 <- 57738*100/tot1984
 perc_acqua2022 <- 27517*100/tot2022
 perc_acqua1984
-# 24.50554
 perc_acqua2022
-# 11.62993
+
 
 perc_altro1984 <- 63787*100/tot1984
 perc_altro2022 <- 76116*100/tot2022
 perc_altro1984
-# 27.0729
 perc_altro2022
-# 32.17007
+
 
 # Costruisco un data frame
 
 class <- c("Foresta","Agricultura","Acqua","Altro")
 percent_1984 <- c(32.08, 16.34, 24.51, 27.07)
 percent_2022 <- c(28.46, 27.74, 11.63, 32.17)
+differenza <- c(percent_1984-percent_2022)
 
-Tab.perc <- data.frame(class, percent_1984, percent_2022)
+Tab.perc <- data.frame(class, percent_1984, percent_2022, differenza)
 Tab.perc
 View(Tab.perc)
 
@@ -205,3 +215,4 @@ grid.arrange(PL1, PL2, nrow=1)
 jpeg("histo.jpg", 800, 500)
 grid.arrange(PL1, PL2, nrow=1)
 dev.off()
+
