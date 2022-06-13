@@ -110,14 +110,14 @@ dev.off()
 
 ## Classificazione
 
-
+set.seed(1)
 class1984<- unsuperClass(H1984, nClasses=4)
 class1984
 # classi: bosco, terreno agricolo, acqua, zone urbanizzate
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(class1984$map, col=cl)
 
-
+set.seed(1)
 class2022<- unsuperClass(H2022, nClasses=4)
 class2022
 # classi: bosco, terreno agricolo, acqua, zone urbanizzate
