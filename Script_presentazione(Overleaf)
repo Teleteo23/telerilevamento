@@ -3,13 +3,14 @@
 \usepackage{color}
 \usepackage[T1]{fontenc}
 
+
 \usetheme{Frankfurt}
 \usecolortheme{crane}
 
 \title{Esame Telerilevamento Geoecologico}
-\author{Matteo Barbero}
-\institute{Alma Mater Studiorum - University of Bologna\\}
-\date{22 Giugno 2022}
+\institute{Alma Mater Studiorum - Università di Bologna\\Telerilevamento Geo-Ecologico}
+\author{Studente: Matteo Barbero\\Docente: Duccio Rocchini}
+\date{A.A. 2021/2022}
 \logo{\includegraphics[height=1cm]{logo.png}}
 
 
@@ -83,7 +84,9 @@
 \end{frame}
 
 \begin{frame}{Script usato}
-    \lstinputlisting[language=R]{}
+    \begin{scriptsize}
+        \lstinputlisting[language=R]{Script1.R}
+    \end{scriptsize}
 \end{frame}
 
 \begin{frame}{DVI}
@@ -126,6 +129,13 @@
     \includegraphics[width=1\textwidth]{5-difdvi.jpg}
     \centering
 \end{frame}
+
+\begin{frame}{Script usato}
+    \begin{scriptsize}
+        \lstinputlisting[language=R]{Script2.R}
+    \end{scriptsize}
+\end{frame}
+
 
 \begin{frame}{NDVI}
     \begin{columns}
@@ -181,7 +191,9 @@
 \end{frame}
 
 \begin{frame}{Script usato}
-    \lstinputlisting[language=R]{}
+    \begin{scriptsize}
+        \lstinputlisting[language=R]{Script3.R}
+    \end{scriptsize}
 \end{frame}
 
 \begin{frame}{Immagine 1984 classificata}
@@ -202,9 +214,10 @@
     1-Acqua 2-Altro 3-Foresta 4-Agricoltura
 \end{frame}
 
-\begin{frame}{Istogramma delle classificazioni}
-    \includegraphics[width=1\textwidth]{11-histo.jpg}
-    \centering
+\begin{frame}{Script usato}
+    \begin{tiny}
+        \lstinputlisting[language=R]{Script4.R}
+    \end{tiny}
 \end{frame}
 
 \begin{frame}{Tabella con le percentuali}
@@ -212,6 +225,10 @@
     \centering
 \end{frame}
 
+\begin{frame}{Istogramma delle classificazioni}
+    \includegraphics[width=1\textwidth]{11-histo.jpg}
+    \centering
+\end{frame}
 
 \section{Conclusioni}
 
