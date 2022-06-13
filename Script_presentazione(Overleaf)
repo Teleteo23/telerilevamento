@@ -87,12 +87,39 @@
 \end{frame}
 
 \begin{frame}{DVI}
-    \includegraphics[width=0.5\textwidth]{3-dvi1.jpg}
-    1984
-    \centering
-    \includegraphics[width=0.5\textwidth]{4-dvi2.jpg}
-    2022
-    \centering
+    \begin{columns}
+    \begin{column}{0.6\textwidth}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{pardvi.jpg}
+    \end{figure}
+    \end{column}
+    \begin{column}{0.1\textwidth}
+     1984 
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     2022
+    \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{DIFDVI}
@@ -101,10 +128,41 @@
 \end{frame}
 
 \begin{frame}{NDVI}
-    \includegraphics[width=0.5\textwidth]{6-ndvi1.jpg}
-    \centering
-    \includegraphics[width=0.5\textwidth]{7-ndvi2.jpg}
-    \centering
+    \begin{columns}
+    \begin{column}{0.6\textwidth}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{parndvi.jpg}
+    \end{figure}
+    \end{column}
+    \begin{column}{0.1\textwidth}
+
+    1984 
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+     \bigskip
+     
+    2022
+
+    \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{DIFNDVI}
@@ -129,12 +187,18 @@
 \begin{frame}{Immagine 1984 classificata}
     \includegraphics[width=1\textwidth]{9-class1984.jpg}
     \centering
+    
+    \medskip
+    
 1-Altro 2-Foresta 3-Agricoltura 4-Acqua
 \end{frame}
 
 \begin{frame}{Immagine 2022 classificata}
     \includegraphics[width=1\textwidth]{10-class2022.jpg}
     \centering
+    
+    \medskip
+    
     1-Acqua 2-Altro 3-Foresta 4-Agricoltura
 \end{frame}
 
