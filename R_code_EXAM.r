@@ -121,7 +121,6 @@ set.seed(1)
 class2022<- unsuperClass(H2022, nClasses=4)
 class2022
 # classi: bosco, terreno agricolo, acqua, zone urbanizzate
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(class2022$map, col=cl)
 
 # Salvo le immagini prodotte
