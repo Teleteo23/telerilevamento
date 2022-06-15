@@ -161,8 +161,16 @@ dev.off()
 # Calcolo le frequenze
 
 freq(class1984$map)
-freq(class2022$map)
+# Classe 1: 63787
+# Classe 2: 75576
+# Classe 3: 38551
+# Classe 4: 57738
 
+freq(class2022$map)
+# Classe 1: 27517
+# Classe 2: 76116
+# Classe 3: 67325
+# Classe 4: 65647
 
 tot1984 <- 38511 + 57738 + 75576 + 63787
 tot2022 <- 65647 + 27517 + 67325 + 76116
