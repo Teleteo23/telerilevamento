@@ -1,3 +1,4 @@
+# R_code_time_series_greenland.r
 # Questo è il terzo script che useremo a lezione
 
 # Time series analysis of Greenland increase LST data (temperature)
