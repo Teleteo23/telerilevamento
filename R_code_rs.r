@@ -1,4 +1,5 @@
 # Questo è il primo script che useremo a lezione
+# R_code_rs.r
 
 # Installo il pacchetto "raster", utile a lavorare su file in formato raster
 # Install.packages ("raster")
@@ -17,7 +18,7 @@ L2011
 # Si aprono gli attributi di dato raster (dimensioni, sorgente, classe, ecc.)
 # Il file caricato è un raster brick, ovvero una serie di bande sovrapposte
 
-# Plotto l'immagine
+# Plotto l'immagine e visualizzo le bande di riflettanza
 plot(L2011)
 
 # Cambio i colori delle immagini per avere una migliore visualizzazione utilizzando la funzione "colorRampPalette"
@@ -27,7 +28,7 @@ cl <- colorRampPalette(c("black","grey","light grey")) (100)
 # Plotto di nuovo l'immagine richiamando anche la nuova scala di colori
 # "col" serve per definire i colori
 plot(L2011, col=cl)
-# Chiudo la finestra grafica in modo da partire da zero con l prossima immagine
+# Chiudo la finestra grafica in modo da partire da zero con la prossima immagine
 dev.off()
 
 # Legenda delle mappe plottate
@@ -73,7 +74,7 @@ plot(L2011$B1_sre, col=clb)
 dev.off()
 
 # Plotto la banda del verde con una scala di colori che va dal dark green al green al light green
-# Assegno ad una variabile "clG" il vettore della scala di colori che ho scelto dicendo quanti passaggi di colore si devono fare (100)
+# Assegno ad una variabile "clg" il vettore della scala di colori che ho scelto dicendo quanti passaggi di colore si devono fare (100)
 clg <- colorRampPalette(c("dark green", "green", "light green")) (100) 
 plot(L2011$B2_sre, col=clg)
 
