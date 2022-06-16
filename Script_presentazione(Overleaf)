@@ -37,7 +37,7 @@
 
 \begin{frame}{Scopo del progetto}
 \begin{itemize}
-    \item  Mostrare il cambiamento "dell'uso del suolo" in una porzione di territorio all'interno della pianura padana.
+    \item  Mostrare il cambiamento dell'uso del suolo in una porzione di territorio, all'interno della pianura padana, in un intervallo di tempo di 38 anni (1984-2022).
 \end{itemize}
 \end{frame}
 
@@ -54,9 +54,15 @@
 
 \begin{frame}{Metodi di analisi}
 \begin{itemize}
-    \item Preparazione iniziale delle immagini
-    \item \pause Land cover
-    \item \pause La classificazione dell'immagine
+    \item Preparazione iniziale delle immagini;
+    
+    \bigskip
+    
+    \item \pause Calcolo degl'indici spettrali delle due immagini e confronto;
+    
+    \bigskip
+    
+    \item \pause Classificazione delle due immagini e confronto.
 \end{itemize}    
 \end{frame}
 
@@ -73,19 +79,25 @@
 \end{frame}
 
 
-\subsection{Land cover}
+\subsection{Indici spettrali}
 
-\begin{frame}{Land cover}
+\begin{frame}{Indici spettrali}
     \begin{itemize}
-        \item il land cover è....
-        \item DVI
-        \item NDVI
+        \item Gl'indici che sono stati utilizzati sono il \textbf{DVI} e l'\textbf{NDVI};
+        
+        \bigskip
+        
+        \item \pause DVI:  difference vegetation index
+        
+        \bigskip
+        
+        \item \pause NDVI:  normalized difference vegetation 
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Script usato}
     \begin{scriptsize}
-        \lstinputlisting[language=R]{Script1.R}
+    \lstinputlisting[language=R]{Script1.R}
     \end{scriptsize}
 \end{frame}
 
@@ -181,12 +193,19 @@
 \end{frame}
 
 
-\subsection{Classificazione}
+\subsection{Classificazione dell'immagine}
 
-\begin{frame}{Classificazione}
+\begin{frame}{Classificazione dell'immagine}
 \begin{itemize}
-    \item la classificazione è....
-    \item ....
+    \item L'immagine viene classificata, in n classi, in base alla riflettanza di ogni pixel dell'immagine sia nella banda del \textbf{"rosso (RED)"} che nella banda del \textbf{"vicino infrarosso (NIR)"};
+    
+    \bigskip
+    
+    \item \pause La classificazione avviene tramite un algoritmo (\textbf{Maximum Likelihood});
+    
+    \bigskip
+    
+    \item \pause La funzione usata per classificare le immagini si chiama:  \textbf{unsuperClass} (classificazione non supervisionata).
 \end{itemize}
 \end{frame}
 
