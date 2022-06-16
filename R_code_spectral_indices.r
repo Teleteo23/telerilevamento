@@ -1,4 +1,6 @@
 # Questo è il secondo script che useremo a lezione
+# R_code_spectral_indices.r
+
 
 # Carico e/o installo una serie di pacchetti che verranno utilizzati nello script
 # Carico il pacchetto raster
@@ -7,7 +9,7 @@ library(raster)
 library(RStoolbox)
 # Installo il pacchetto rasterdiv
 #install.packages("rasterdiv")
-# Carico il pacchetto rasterdiv che serve per...
+# Carico il pacchetto rasterdiv che serve per calcolare gli indici di diversità su matrici numeriche
 library(rasterdiv) # for the worldwide NDVI
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
@@ -129,5 +131,5 @@ si2006 <- spectralIndices(L2006, green=3, red=2, nir=1)
 plot(si2006, col=cl)
 
 # Installo e/o carico il pacchetto "rasterdiv" (vedi ad inizio script)
-#
+# Plotto diversi indici spettrali
 plot(copNDVI)
