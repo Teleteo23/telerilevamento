@@ -14,9 +14,9 @@
 # 08. Multivariate analysis
 # 09. Variability 2
 # 10. LiDAR
-# 11.
-# 12.
-# 13.
+# 11. SDM
+# 12. Colorist
+# 13. Functions
 
 
 #---------------------------------------------------
@@ -1166,21 +1166,239 @@ plot(point_cloud)
 
 #---------------------------------------------------
 
-# 11.
+# 11. SDM
+# Questo è l'undicesimo script che useremo a lezione
+
+# Installo il pacchetto sdm
+# install.packages("sdm")
+
+# Carico il pacchetto sdm
+library(sdm)
+# Carico il pacchetto raster
+library(raster) # predictors
+# Carico il pacchetto rgdal
+library(rgdal) # species
+
+# In questo caso non faccio il settaggio della working directory perché useremo un file di sistema
+# Utilizzo la funzione "system.file" per leggere il file di sistema
+file <- system.file("external/species.shp", package="sdm") 
+# Chiamo l'oggetto per visualizzarne le informazioni
+file
+# Utilizzo la funzione "shapefile" per creare uno shapefile
+species <- shapefile(file)
+# Chiamo l'oggetto per visualizzarne le informazioni
+species
+
+# Faccio un plot della specie
+plot(species, pch=19)
+
+# Assegno ad un oggetto le occurence della specie e lo chiamo per visualizzarlo
+occ <- species$Occurrence
+occ
+
+# Visualizzo solo i punti in cui l'occorrenza è uguale a 1
+plot(species[occ == 1,],col='blue',pch=19)
+# Aggiungo dei punti al grafico precedente attraverso la funzione "points"
+points(species[occ == 0,],col='red',pch=19)
+
+# Utilizzo la funzione "path" per caricare il file dei predittori
+path <- system.file("external", package="sdm")
+# Faccio una lista di questi predittori
+lst <- list.files(path=path,pattern='asc$',full.names = T)
+# Visualizzo la lista
+lst
+
+# Faccio lo stack di questa lista
+preds <- stack(lst)
+# Visualizzo lo stack
+preds 
+
+# Faccio il plot dei predittori
+# Creo una nuova scala colori per miglirare la visualizzazione
+cl <- colorRampPalette(c('blue','orange','red','yellow')) (100)
+plot(preds, col=cl)
+
+# Assegno dei nomi più corti ai predittori
+elev <- preds$elevation
+prec <- preds$precipitation
+temp <- preds$temperature
+vege <- preds$vegetation
+
+# Faccio un plot per ognuno dei predittori sovrapposti allo stack
+plot(elev, col=cl)
+points(species[occ == 1,], pch=19)
+
+plot(prec, col=cl)
+points(species[occ == 1,], pch=19)
+
+plot(temp, col=cl)
+points(species[occ == 1,], pch=19)
+
+plot(vege, col=cl)
+points(species[occ == 1,], pch=19)
+
+# Inizio a costruire il mio modello
+
+# Utilizzo la funzione "sdmData" che dichiara i dati
+datasdm <- sdmData(train=species, predictors=preds)
+# Chiamo l'oggetto per visualizzarne le informazioni
+datasdm
+
+# Utilizzo la funzione "sdm" 
+m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=datasdm, methods = "glm")
+# Chiamo l'oggetto per visualizzarne le informazioni
+m1
+
+# Utilizzo la funzione "predict" per fare la previosione della mappa finale
+p1 <- predict(m1, newdata=preds) 
+# Chiamo l'oggetto per visualizzarne le informazioni
+p1
+
+# Faccio il plot di questa previsione aggiungendo anche i punti della distribuzione della specie
+plot(p1, col=cl)
+points(species[occ == 1,], pch=19)
+
+# Faccio uno stack dello stack precedente e della previsione
+s1 <- stack(preds,p1)
+
+# Faccio il plot di questo nuovo stack
+plot(s1, col=cl)
+
+# Voglio cambiare i nomi nel plot dello stack
+names(s1) <- c('elevation', 'precipitation', 'temperature', 'vegetation', 'model')
+
+# Rifaccio il plot di questo nuovo stack
+plot(s1, col=cl)
+
+# In alternativa posso fare un par con le 5 immagini
+par(mfrow=c(2,3))
+plot(p1, col=cl)
+plot(elev, col=cl)
+plot(prec, col=cl)
+plot(temp, col=cl)
+plot(vege, col=cl)
 
 
 
 
 #---------------------------------------------------
 
-# 12.
+# 12. Colorist
+# Questo è il dodicesimo script che useremo
+
+
+# Carico il pacchetto colorist
+library(colorist)
+# Carico il pacchetto ggplot2
+library(ggplot2)
+
+# Utilizzo la funzione "data" per leggere il file di sistema
+data("fiespa_occ")
+
+met1 <- metrics_pull(fiespa_occ)
+
+# Creo una nuova palette attraverso la funzione "palette_timecycle"
+pal<- palette_timecycle(fiespa_occ)
+
+# Creo una mappa multipla
+map_multiples(met1, pal, ncol = 3, labels = names(fiespa_occ))
+
+# Estraggo una mappa singola
+map_single(met1, pal, layer = 6)
+
+# Manipolo le mappe cambiando i colori
+p1_custom <- palette_timecycle(12, start_hue = 60)
+map_multiples(met1, p1_custom, ncol = 4, labels = names(fiespa_occ))
+
+# Metrica
+met1_distill <- metrics_distill(fiespa_occ) # we can distill the information
+map_single(met1_distill, pal)
+map_single(met1_distill, p1_custom)
+# le parti più colorate indicano hanno + alta specificità (la specie si trova lì in primavera/estate/inverno/ecc)
+# le parti grigie sono meno specifiche: si può trovare la specie in qualsiasi periodo dell'anno
+
+# Creo una legenda
+legend_timecycle(pal, origin_label = "1 jan")
+
+# Carico un nuovo dato e lo visualizzo
+data("fisher_ud")
+fisher_ud
+
+# Creo la metrica e la visualizzo
+m2 <- metrics_pull(fisher_ud)
+m2
+
+# Creo una nuova palette nel tempo non lineare e la visualizzo
+pal2 <- palette_timeline(fisher_ud)
+head(pal2)
+
+# Creo una mappa multipla
+map_multiples(m2, pal2, ncol = 3, labels = names(fisher_ud))
+map_multiples(m2, pal2, ncol = 3, lambda_i = -12, labels = names(fisher_ud))
+
+# Faccio la metrica e estraggo una mappa singola
+m2_distill<-metrics_distill(fisher_ud)
+map_single(m2_distill,pal2,lambda_i = -10)
+
+# Creo una nuova legenda
+legend_timeline(pal2)
 
 
 
 
 #---------------------------------------------------
 
-# 13.
+# 13. Functions
+# Questo è il tredicesimo script che useremo a lezione
+
+
+library(raster)
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows
+
+# Faremo una serie di funzioni
+
+# Funzione 1
+# Creo una funzione che, una volta chiamata, "saluta" il nome inserito
+cheer_me <- function(your_name) {
+cheer_string <- paste("Hello", your_name, sep = " ")
+print(cheer_string)
+}   
+
+cheer_me("matteo")
+
+# Funzione 2
+# Creo una funzione che, una volta chiamata, "saluta" il nome inserito n volte, dove "n" lo scelgo io
+cheer_me_n_times <- function(your_name, n) {
+cheer_string <- paste("Hello", your_name, sep = " ")
+
+for(i in seq(1, n)) {
+print(cheer_string)
+}
+}
+
+cheer_me_n_times("matteo", 5)
+
+
+# Funzione 3
+# Creo una funzione che, risciamata un'immagine dalla cartella di lavoro, posso scegliere se plottarla con una palette creata da me o lasciare quella di default
+dato <- raster("sentinel.png")
+
+plot(dato)
+
+plot_raster <- function(r, col = NA){
+if(!is.na(col)) {
+pal <- colorRampPalette(col) (100)
+plot(r, col = pal)
+} else {
+plot(r)
+}
+
+}
+
+plot_raster(dato, c("brown", "yellow", "green"))
+plot_raster(dato)
+
 
 
 
