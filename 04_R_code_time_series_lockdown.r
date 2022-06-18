@@ -1,4 +1,5 @@
 # Questo è il quarto script che useremo a lezione
+# R_code_time_series_lockdown.r
 
 # R code for chemical cycling study
 # time series of NO2 change in Europe during the lockdown
@@ -21,7 +22,7 @@ cl <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(EN01, col=cl)
 dev.off()
 
-# Importo l'immagine dei valori di NO2 di fine Marzo e la plotto
+# Importo l'immagine dei valori di NO2 di fine Marzo (13° dato) e la plotto
 EN13 <- raster("EN_0013.png")
 plot(EN13, col=cl)
 dev.off()
