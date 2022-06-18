@@ -1,0 +1,77 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage{color}
+
+\usetheme{Frankfurt} % Struttura tema
+%\usetheme{Madrid}
+%\usetheme{Berkeley}
+\usecolortheme{crane} % Colore tema
+% https://mpetroff.net/files/beamer-theme-matrix/
+
+\title{My first presentation under beamer!}
+\author{Matteo Barbero}
+
+\institute{Alma Mater Studiorum - University of Bologna\\}
+
+\begin{document}
+
+\maketitle
+
+\AtBeginSection[]
+{
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents[currentsection, currentsubsection]
+\end{frame}
+}
+
+\section{Introduzione}
+
+\begin{frame}{La mia prima slide}
+\begin{itemize}
+    \item  Mars' surface is covered with \textbf{craters} that formed when comets and/or asteroids impacted the red planet. 
+    \item \pause These craters are especially numerous in the \textbf{southern highlands} of Mars
+    \item \pause Third sentence.
+\end{itemize}
+\end{frame}
+
+\section{Metodi}
+
+\subsection{Strumenti}
+
+\begin{frame}{Strumenti usati}
+ \includegraphics[width=0.7\textwidth]{sonda.jpeg}
+ \centering
+\end{frame}
+
+\begin{frame}{Strumenti usati}
+ \includegraphics[width=0.7\textwidth]{sonda2.jpg}
+ \centering
+\end{frame}
+
+\begin{frame}{Strumenti usati}
+ \includegraphics[width=0.7\textwidth]{rover.jpg}
+ \centering
+\end{frame}
+
+\subsection{Analisi}
+
+\begin{frame}{Formule usate}
+ \includegraphics[width=0.3\textwidth]{eulero.jpg}
+ \centering
+\begin{equation}
+   e^{i \pi} + 1 = 0
+\end{equation}
+\end{frame}
+
+\section{Risultati}
+
+\begin{frame}{Risultati}
+ \includegraphics[width=0.35\textwidth]{sonda2.jpg}
+ \includegraphics[width=0.35\textwidth]{rover.jpg} 
+ \includegraphics[width=0.35\textwidth]{sonda.jpeg}
+ \includegraphics[width=0.35\textwidth]{sonda.jpeg} 
+ \centering
+\end{frame}
+
+\end{document}
