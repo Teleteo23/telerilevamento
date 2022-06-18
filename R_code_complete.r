@@ -4,22 +4,24 @@
 
 # Summary
 
-# 1. Remote sensing first code
-# 2. Specrtal indices
-# 3.
-# 4.
-# 5.
-# 6. 
-# 7.
-# 8. 
-# 9.
-# 10.
+# 01. Remote sensing first code
+# 02. Specrtal indices
+# 03. Time series greenland
+# 04. Time series lockdown
+# 05. Classification
+# 06. Land cover
+# 07. Variability
+# 08. Multivariate analysis
+# 09. Variability 2
+# 10. LiDAR
 # 11.
 # 12.
+# 13.
+
 
 #---------------------------------------------------
 
-# 1. Remote sensing first code
+# 01. Remote sensing first code
 # Questo è il primo script che useremo a lezione
 
 
@@ -208,7 +210,7 @@ plotRGB(L2011, r=4, g=3, b=2, stretch="lin")
 
 #---------------------------------------------------
 
-# 2. Specrtal indices
+# 02. Specrtal indices
 # Questo è il secondo script che useremo a lezione
 
 
@@ -347,53 +349,838 @@ plot(copNDVI)
 
 #---------------------------------------------------
 
+# 03.Time series greenland
+# Questo è il terzo script che useremo a lezione
+
+# Time series analysis of Greenland increase LST data (temperature)
+
+# Carico e/o installo una serie di pacchetti che verranno utilizzati nello script
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto rgdal
+library(rgdal)
+# Installo il pacchetto rasterVis
+#install.packages("rasterVis")
+# Carico il pacchetto rasterVis che implementa metodi per una maggiore visualizzazione e interazione dei dati raster
+library(rasterVis)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/greenland") # Windows 
+
+# Assegno a degli oggetti la funzione "raster" necessaria per importare le immagini che verranno utilizzate
+Lst_2000 <- raster("lst_2000.tif")
+Lst_2005 <- raster("lst_2005.tif")
+Lst_2010 <- raster("lst_2010.tif")
+Lst_2015 <- raster("lst_2015.tif")
+
+# Chiamo gli oggetti per visualizzare le loro informazioni
+Lst_2000
+Lst_2005
+Lst_2010
+Lst_2015
+
+# Plotto l'immagine del 2000
+plot(Lst_2000)
+dev.off()
+
+# Costruisco un multiframe con le 4 immagini
+# Creo una nuova scala colori per miglirare la visualizzazione
+cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
+par(mfrow=c(2,2))
+plot(Lst_2000, col=cl)
+plot(Lst_2005, col=cl)
+plot(Lst_2010, col=cl)
+plot(Lst_2015, col=cl)
+dev.off()
+
+# Metodo per importare contemporaneamente tutte le immagini 
+# Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
+# "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune (in questo caso "lst")
+rlist <- list.files(pattern="lst")
+# Visualizzo i files all'interno della mia lista
+rlist
+
+# Applico la funzione "raster" alla lista utilizzando un'altra funzione chiamata "lapply" e la assegno ad un oggetto
+import <- lapply(rlist,raster)
+# Visualizzo i files importati
+import
+
+# Creo un singolo file, unendo le 4 immagini, utilizzando la funzione "stack" e lo assegno ad un oggetto
+TGr <- stack(import)
+# Visualizzo il nuovo file
+TGr
+
+# Plotto il nuovo file
+plot(TGr, col=cl)
+dev.off()
+
+# Plotto una singola immagine
+plot(TGr[[3]], col=cl)
+dev.off()
+
+# Plotto TGr in RGB utilizzando diverse sovrapposizioni
+plotRGB(TGr, 1, 2, 3, stretch="Lin") 
+plotRGB(TGr, 2, 3, 4, stretch="Lin") 
+plotRGB(TGr, 4, 3, 2, stretch="Lin") 
+
+
 
 
 #---------------------------------------------------
 
+# 04. Time series lockdown
+# Questo è il quarto script che useremo a lezione
+
+
+# R code for chemical cycling study
+# time series of NO2 change in Europe during the lockdown
+# https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P/Coronavirus_lockdown_leading_to_drop_in_pollution_across_Europe
+# https://acp.copernicus.org/preprints/acp-2020-995/acp-2020-995.pdf
+
+# Carico il pacchetto raster
+library(raster)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/EN") # Windows 
+
+# Utilizzo la funzione "raster" per importare la prima immagine della time series e la assegno ad un oggetto
+EN01 <- raster("EN_0001.png") # 29/01/20
+# Chiamo l'oggetto per visualizzarne le informazioni
+EN01
+
+# Plotto i valori di NO2 di Gennaio con una scala colori che ne migliora la visualizzazione
+cl <- colorRampPalette(c('red','orange','yellow'))(100) 
+plot(EN01, col=cl)
+dev.off()
+
+# Importo l'immagine dei valori di NO2 di fine Marzo (13° dato) e la plotto
+EN13 <- raster("EN_0013.png")
+plot(EN13, col=cl)
+dev.off()
+
+# Per caricare e visualizzare tutti i files della cartella in maniera rapida utilizzo il seguente metodo:
+# Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
+# "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune
+rlist <- list.files(pattern="EN")
+# Visualizzo i files all'interno della mia lista
+rlist
+
+# Applico la funzione "raster" alla lista utilizzando un'altra funzione chiamata "lapply" e la assegno ad un oggetto
+rimp <- lapply(rlist,raster)
+# Visualizzo i files importati
+rimp
+
+# Creo un singolo file, unendo le 13 immagini, utilizzando la funzione "stack" e lo assegno ad un oggetto
+ENs <- stack(rimp)
+# Visualizzo il nuovo file
+ENs
+
+# Plotto il nuovo file
+# Creo una nuova scala colori per miglirare la visualizzazione
+cls <- colorRampPalette(c("blue","light blue","pink","red"))(100)
+plot(ENs, col=cls)
+dev.off()
+
+# Voglio plottare la prima e l'ultima immagine insieme
+# Per farlo posso usare diversi metodi
+# Metodo 1
+# Costruisco un multiframe chiamando gli oggetti che ho creato all'inizio dello script
+par(mfrow=c(2,1))
+plot(EN01, col=cl)
+plot(EN13, col=cl)
+dev.off()
+
+# Metodo 2
+# Plotto le immagini dallo stack chiamando gli oggetti che mi interessano
+par(mfrow=c(2,1))
+plot(ENs$EN_0001, col=cl)
+plot(ENs$EN_0013, col=cl)
+dev.off()
+
+# Metodo 3
+# Facico uno stack con solo i due elementi che mi servono e li plotto
+EN113 <- stack(ENs[[1]], ENs[[13]])
+plot(EN113, col=cl)
+dev.off()
+
+# Faccio la differenza tra il primo e il tredicesimo elemento
+# In questo modo vedo la variazione di NO2 durante il lockdown
+difEN <- ENs[[1]] - ENs[[13]]
+# Creo una nuova scala colori per miglirare la visualizzazione
+cldif <- colorRampPalette(c('blue','white','red'))(100) 
+# Plotto la differenza appena calcolata
+plot(difEN, col=cldif)
+# Il rosso è Gennaio e il blu è Marzo
+dev.off()
+
+# Faccio un plot RGB con tre immagnini unite assieme (Gennaio, Febbraio, Marzo)
+plotRGB(ENs, r=1, g=7, b=13, stretch="lin")
+plotRGB(ENs, r=1, g=7, b=13, stretch="hist")
+dev.off()
+
+# Attraverso la funzione "source" richiamo un codice esterno al mio script
+source("R_inputcode.r")
 
 
 #---------------------------------------------------
 
+# 05. Classification
+# Questo è il quinto script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+SO <- brick("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
+# Chiamo l'oggetto per visualizzarne le informazioni
+SO
+
+# Essendo un immagine RGB, faccio un plot RGB 
+# Utilizzo sia lo stretch lineare che a istogramma
+plotRGB(SO, 1, 2, 3, stretch="lin")
+plotRGB(SO, 1, 2, 3, stretch="hist")
+dev.off()
+
+# Classifico l'immagine sulla base di come si sono disposti i pixel nello spazio delle tre bande a nostra disposizione
+# Per farlo utilizzo la funzione "unsuperClass" indicando il numero di classi che voglio e la assegno ad un oggetto
+SOc <- unsuperClass(SO, nClasses=3)
+# Chiamo l'oggetto per visualizzarne le informazioni
+SOc
+# Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
+# Creo una nuova scala colori per miglirare la visualizzazione
+cl <- colorRampPalette(c('yellow','black','red'))(100)
+plot(SOc$map, col=cl)
+dev.off()
+
+# Importo una nuova immagine
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+GC <- brick("dolansprings_oli_2013088_canyon_lrg.jpg")
+# Chiamo l'oggetto per visualizzarne le informazioni
+GC
+
+# Essendo un immagine RGB, faccio un plot RGB 
+plotRGB(GC, 1, 2, 3, stretch="lin")
+plotRGB(GC, 1, 2, 3, stretch="hist")
+dev.off()
+
+# Classifico l'immagine sulla base di come si sono disposti i pixel nello spazio delle tre bande a nostra disposizione
+# Per farlo utilizzo la funzione "unsuperClass" indicando il numero di classi che voglio e la assegno ad un oggetto
+GCc2 <- unsuperClass(GC, nClasses=2)
+# Chiamo l'oggetto per visualizzarne le informazioni
+GCc2
+# Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
+plot(GCc2$map)
+dev.off()
+
+# Faccio una nuova classificazione aumentando il numero di classi
+# Se voglio mantenere le stesse classi ogni volta che faccio questa classificazione utilizzo il comando "set.seed()"
+set.seed(1)
+GCc4 <- unsuperClass(GC, nClasses=4)
+# Chiamo l'oggetto per visualizzarne le informazioni
+GCc4
+# Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
+# Creo una nuova scala colori per miglirare la visualizzazione
+cl2 <- colorRampPalette(c('yellow','red','blue','black'))(100)
+plot(GCc4$map, col=cl2)
+dev.off()
+
+# Comparo la mappa classificata con quella originale
+par(mfrow=c(2,1))
+plot(GCc4$map, col=cl2)
+plotRGB(GC, 1, 2, 3, stretch="hist")
+dev.off()
+
 
 
 
 #---------------------------------------------------
 
+# 06. Land cover
+# Questo è il sesto script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+# Installo il pacchetto ggplot2
+#install.packages("ggplot2")
+# Carico il pacchetto ggplot2
+library(ggplot2)
+# Carico il pacchetto gridExtra
+library(gridExtra)
+# Installo il pacchetto patchwork
+#install.packages("patchwork")
+# Carico il pacchetto patchwork
+library(patchwork)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+L92 <- brick("defor1.jpg")
+# Chiamo l'oggetto per visualizzarne le informazioni
+L92
+
+# Essendo un immagine RGB, faccio un plot RGB
+# Faccio il plot con le due tipologie di stretch
+# NIR 1, RED 2, GREEN 3
+plotRGB(L92, 1, 2, 3, stretch="lin")
+plotRGB(L92, 1, 2, 3, stretch="hist")
+dev.off()
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+L06 <- brick("defor2.jpg")
+# Chiamo l'oggetto per visualizzarne le informazioni
+L06
+
+# Plotto entrambe le immagini in un'unica finestra
+# Essendo un immagine RGB, faccio un plot RGB 
+# NIR 1, RED 2, GREEN 3
+par(mfrow=c(2,1))
+plotRGB(L92, 1, 2, 3, stretch="lin")
+plotRGB(L06, 1, 2, 3, stretch="lin")
+dev.off()
+
+# Faccio un plot RGB, utilizzando ggplot2, delle due immagini 
+ggRGB(L92, 1, 2, 3, stretch="lin")
+ggRGB(L06, 1, 2, 3, stretch="lin")
+dev.off()
+
+# Creo un multiframe utilizzando ggplot2 e patchwork
+# Assegno a due variabili i plot ggRGB delle due immagini
+p1 <- ggRGB(L92, 1, 2, 3, stretch="lin")
+p2 <- ggRGB(L06, 1, 2, 3, stretch="lin")
+# Visualizzo le due immagini assieme sulla stessa riga
+p1+p2
+dev.off()
+# Visualizzo le due immagini assieme sulla stessa colonna
+p1/p2
+dev.off()
+
+# Classifico l'immagine L92 sulla base di come si sono disposti i pixel nello spazio delle tre bande a nostra disposizione
+# Per farlo utilizzo la funzione "unsuperClass" indicando il numero di classi che voglio e la assegno ad un oggetto
+L92c <- unsuperClass(L92, nClasses=2)
+# Chiamo l'oggetto per visualizzarne le informazioni
+L92c
+
+# Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
+# Creo una nuova scala colori per miglirare la visualizzazione
+cl <- colorRampPalette(c('yellow','red'))(100)
+plot(L92c$map, col=cl)
+dev.off()
+# La classe 1 è classificata come foresta, mentre la parte agricola più l'acqua è classificata come classe 2
+
+# Classifico l'immagine L06 sulla base di come si sono disposti i pixel nello spazio delle tre bande a nostra disposizione
+# Per farlo utilizzo la funzione "unsuperClass" indicando il numero di classi che voglio e la assegno ad un oggetto
+L06c <- unsuperClass(L06, nClasses=2)
+# Chiamo l'oggetto per visualizzarne le informazioni
+L06c
+
+# Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
+plot(L06c$map, col=cl)
+dev.off()
+# Anche in questo caso la classe 1 è classificata come foresta, mentre la parte agricola più l'acqua 
+
+# Calcolo la frequenza di pixel appartenenti rispettivamente alla classe della foresta (classe 1) e alla classe agricolo+acqua (classe2)
+freq(L92c$map)
+# Pixels classe 1: 307021
+# Pixels classe 2: 34271
+
+# Pixels totali
+tot92 <- 307021+34271
+tot92
+# Proporzione della foresta
+prop_forest92 <- 307021/tot92
+prop_forest92
+# Percentuale della foresta
+perc_forest92 <- 307021*100/tot92
+perc_forest92
+# Percentuale della porzione agricola
+perc_agr92 <- 34271*100/tot92
+perc_agr92
+# Percentuale della foresta: 89.95845
+# Percentuale della porzione agricola: 10.04155
+
+
+# Calcolo la frequenza di pixel appartenenti rispettivamente alla classe della foresta (classe 1) e alla classe agricolo+acqua (classe2)
+freq(L06c$map)
+# Pixels classe 1: 178699
+# Pixels classe 2: 164027
+
+# Pixels totali
+tot06 <- 178699+164027
+tot06
+# Proporzione della foresta
+prop_forest06 <- 178699/tot06
+prop_forest06
+# Percentuale della foresta
+perc_forest06 <- 178699*100/tot06
+perc_forest06
+# Percentuale della porzione agricola
+perc_agr06 <- 164027*100/tot06
+perc_agr06
+# Percentuale della foresta: 52.14049
+# Percentuale della porzione agricola: 47.85951
+
+# DATI FINALI:
+# Percentuale della foresta 1992: 89.95845
+# Percentuale della porzione agricola 1992: 10.04155
+# Percentuale della foresta 2006: 52.14049
+# Percentuale della porzione agricola 2006: 47.85951
+
+# Creo un data frame con tre colonne
+# La prima colonna sarà la classe, la seconda i valori percentuali del 1992 e la terza i valori percentuali del 2006
+class <- c("Forest","Agriculture")
+percent_1992 <- c(89.95, 10.05)
+percent_2006 <- c(52.15, 47.85)
+multitemporal <- data.frame(class, percent_1992, percent_2006)
+multitemporal
+View(multitemporal)
+
+# Plotto il data frame creando un immagine a istogrammi
+PL1 <- ggplot(multitemporal, aes(x=class, y=percent_1992, color=class)) + geom_bar(stat="identity", fill="black")
+PL2 <- ggplot(multitemporal, aes(x=class, y=percent_2006, color=class)) + geom_bar(stat="identity", fill="white")
+grid.arrange(PL1, PL2, nrow=1)
+
+# Salvo in pdf il data frame
+pdf("data_frame")
+grid.arrange(PL1, PL2, nrow=1)
+dev.off()
+
+
+#---------------------------------------------------
+
+# 07. Variability
+# Questo è il settimo script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+# Carico il pacchetto ggplot2
+library(ggplot2) # for ggplot plotting
+# Carico il pacchetto patchwork
+library(patchwork) # multiframe with ggplot2 graphs
+# Installo il pacchetto viridis
+#install.packages("viridis")
+# Carico il pacchetto viridis
+library(viridis)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+sen <- brick("sentinel.png")
+sen
+# band1 = NIR
+# band2 = red
+# band3 = green
+
+# Essendo un immagine RGB, faccio un plot dell'immagine utilizzando la funzione ggRGB
+ggRGB(sen, 1, 2, 3, stretch="lin")
+# Posso anche non mettere lo stretch perché la funzione ggRGB lo fa automaticamente
+ggRGB(sen, 1, 2, 3)
+dev.off()
+# Metto il NIR nella componente green
+ggRGB(sen, 2, 1, 3)
+
+# Plotto i due grafici uno accanto all'altro
+g1 <- ggRGB(sen, 1, 2, 3)
+g2 <- ggRGB(sen, 2, 1, 3)
+g1+g2 # Thanks to patchwork!
+
+# Calcolo la variabilità dell'immagine
+# La calcolo sul NIR (primo elemento)
+nir <- sen[[1]]
+# Per fare il calcolo della variabilità utilizzo la funzione focal ed utilizzo una finestra di 3x3 pixels
+sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd) # la funzione è basata sulla deviazione standard
+
+# Plotto l'immagine della variabilità
+# Creo una nuova scala colori per miglirare la visualizzazione
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+plot(sd3, col=clsd)
+dev.off()
+ 
+
+# Faccio un plot con ggplot
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+ggplot() + 
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer))
+
+# A seguire, è stato eseguito lo stesso plot con tre legende differenti estratte dal pacchetto viridis
+
+# Faccio un plot con la legenda viridis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster...
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis() +
+ggtitle("Standard deviation by viridis package")
+
+# Faccio un plot con la legenda cividis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster...
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "cividis") +
+ggtitle("Standard deviation by viridis package")
+
+# Faccio un plot con la legenda magma
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster...
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "magma") +
+ggtitle("Standard deviation by viridis package")
+
+# Calcolo la variabilità dell'immagine attraverso la funzione focal ed utilizzo una finestra 7x7
+# La calcolo sul NIR (primo elemento)
+sd7 <- focal(nir, matrix(1/49, 7, 7), fun=sd) # la funzione è basata sulla deviazione standard
+
+# Plotto l'immagine della variabilità utilizzando la nuova scala colori
+plot(sd7, col=clsd)
+dev.off()
+
+
+
+#---------------------------------------------------
+# 08. Multivariate analysis
+# Questo è l'ottavo script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+# Carico il pacchetto ggplot2
+library(ggplot2) # for ggplot plotting
+# Carico il pacchetto patchwork
+library(patchwork) # multiframe with ggplot2 graphs
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+I11 <- brick("p224r63_2011_masked.grd")
+# Chiamo l'oggetto per visualizzarne le informazioni
+I11
+
+# Faccio un plot dell'immagine
+plot(I11)
+
+# Prima di procedere con l'analisi multivariata devo fare un ricampionamento dell'immagine
+# Per poterlo fare utilizzo la funzione aggregate 
+I11res <- aggregate(I11, fact=10)
+
+# Essendo immagini RGB, faccio un plot delle immagini utilizzando la funzione ggRGB e le metto una sopra all'altra
+g1 <- ggRGB(I11, 4, 3, 2)
+g2 <- ggRGB(I11res, 4, 3, 2)
+g1/g2 # Thanks to patchwork!
+
+# Faccio un nuovo ricampionamento poù "aggressivo"
+I11res2 <- aggregate(I11, fact=100)
+
+# Faccio un nuovo plot con le tre ummagini incolonnate
+g1 <- ggRGB(I11, 4, 3, 2)
+g2 <- ggRGB(I11res, 4, 3, 2)
+g3 <- ggRGB(I11res2, 4, 3, 2)
+g1/g2/g3
+
+# PCA analysis
+# Faccio la PCA dell'oggetto appena ricampionato
+# Per farlo utilizzo la funzione rasterPCA e la assegno ad un ogggetto
+I11respca <- rasterPCA(I11res)
+
+# Faccio il riassunto dell'oggetto appena creato attraverso la funzione summary
+summary(I11respca$model)
+
+# Faccio il plot della PCA
+plot(I11respca$map)
+
+# Faccio una serie di ggplot utilizzando due diversi elementi della PCA e due mappe differenti dell'immagine ricampionata
+
+g4 <- ggplot()+
+geom_raster(I11respca$map, mapping =aes(x=x, y=y, fill=PC1))+
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC1")
+
+g5 <-ggplot()+
+geom_raster(I11respca$map, mapping =aes(x=x, y=y, fill=PC7))+
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC7")
+
+g4+g5
+
+g6 <-ggplot()+
+geom_raster(I11res, mapping =aes(x=x, y=y, fill=B4_sre))+
+scale_fill_viridis(option = "inferno") +
+ggtitle("NIR")
+
+g4+g6
+
+g7 <- ggRGB(I11res, 2, 3, 4, stretch="hist")
+
+g4+g7
+
+# Faccio due plot RGB differenti di tre livelli della PCA
+plotRGB(I11respca$map, 1, 2, 3, stretch="lin")
+plotRGB(I11respca$map, 5, 6, 7, stretch="lin")
+
+ 
+
 
 
 
 #---------------------------------------------------
 
+# 09. Variability 2
+# Questo è il nono script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster)
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+# Carico il pacchetto ggplot2
+library(ggplot2) # for ggplot plotting
+# Carico il pacchetto patchwork
+library(patchwork) # multiframe with ggplot2 graphs
+# Carico il pacchetto viridis
+library(viridis)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "brick" per importare l'immagine e la assegno ad un oggetto
+# Utilizzo la funzione "brick" perché l'immagine è un RGB
+sen <- brick("sentinel.png")
+sen
+# band1 = NIR
+# band2 = red
+# band3 = green
+
+# Essendo un immagine RGB, faccio un plot dell'immagine utilizzando la funzione ggRGB
+# Posso anche non mettere lo stretch perché la funzione ggRGB lo fa automaticamente
+ggRGB(sen, 1, 2, 3)
+dev.off()
+# Metto il NIR nella componente green
+ggRGB(sen, 2, 1, 3)
+
+# Faccio un'analisi multivariata
+sen_pca <- rasterPCA(sen)
+# Chiamo l'oggetto per visualizzarne le informazioni
+sen_pca
+
+# Faccio un summary della PCA
+summary(sen_pca$model)
+
+# Plotto la PCA
+plot(sen_pca$map)
+
+# Preparo delle immagini che verranno plottate
+pc1 <- sen_pca$map$PC1
+pc2 <- sen_pca$map$PC2
+pc3 <- sen_pca$map$PC3
+
+# Faccio un plot con ggplot del PC1
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+g1 <- ggplot() + 
+geom_raster(pc1, mapping=aes(x=x, y=y, fill=PC1))
+
+# Faccio un plot con ggplot del PC2
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+g2 <- ggplot() + 
+geom_raster(pc2, mapping=aes(x=x, y=y, fill=PC2))
+
+# Faccio un plot con ggplot del PC3
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+g3 <- ggplot() + 
+geom_raster(pc3, mapping=aes(x=x, y=y, fill=PC3))
+
+# Metto nella stessa finestra le tre immagini grazie al pacchetto patchwork
+g1+g2+g3
+
+# Calcolo la variabilità della PC1
+# Per fare il calcolo utilizzo la funzione focal ed usando una finestra 3x3
+sd3 <- focal(pc1, matrix(1/9, 3, 3), fun=sd) # la funzione è basata sulla deviazione standard
+
+# Faccio un plot con ggplot della PC1 con la legenda viridis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+ggplot() + 
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis()
+
+# Faccio un plot con ggplot della PC1 con la legenda cividis
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "cividis")
+
+# Faccio un plot con ggplot della PC1 con la legenda inferno
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "inferno")
+
+# Fccio un plot, utilizzando patchwork, delle tre fasi dell'analisi dell'immagine
+im1 <- ggRGB(sen, 2, 1, 3)
+im2 <- ggplot() + 
+geom_raster(pc1, mapping=aes(x=x, y=y, fill=PC1))
+im3 <- ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "inferno")
+im1 + im2 + im3
+
+# Calcolo la variabilità della PC1
+# Per fare il calcolo utilizzo la funzione focal ed usando una finestra 5x5
+sd5 <- focal(pc1, matrix(1/25, 5, 5), fun=sd) # la funzione è basata sulla deviazione standard
+
+# Faccio un plot con ggplot della PC1 con la legenda inferno
+im4 <- ggplot() + 
+geom_raster(sd5, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "inferno")
+im4
+
+# Fccio un plot, utilizzando patchwork, dell'immagine 3x3 e dell'immagine 5x5
+im3 + im4
+
+# Calcolo la variabilità della PC1
+# Per fare il calcolo utilizzo la funzione focal ed usando una finestra 7x7
+sd7 <- focal(pc1, matrix(1/49, 7, 7), fun=sd) # la funzione è basata sulla deviazione standard
+
+# Faccio un plot con ggplot della PC1 con la legenda inferno
+im5 <- ggplot() + 
+geom_raster(sd7, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "inferno")
+im5
+
+# Fccio un plot, utilizzando patchwork, delle tre immagini (3x3, 5x5, 7x7)
+im3 + im4 + im5
 
 
 
 #---------------------------------------------------
 
+# 10. LiDAR
+# Questo è il decimo script che useremo a lezione
+
+
+# Carico il pacchetto raster
+library(raster) #"Geographic Data Analysis and Modeling"
+# Carico il pacchetto RStoolbox
+library(RStoolbox)
+# Carico il pacchetto rgdal
+library(rgdal) #"Geospatial Data Abstraction Library"
+# Carico il pacchetto ggplot2
+library(ggplot2) # for ggplot plotting
+# Carico il pacchetto viridis
+library(viridis)
+# Installo il pacchetto lidr
+#install.packages("lidR")
+# Carico il pacchetto lidr
+library(lidR)
+
+# Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
+setwd("C:/lab/") # Windows 
+
+# Utilizzo la funzione "raster" per importare il dsm 2013
+dsm_2013 <- raster("2013Elevation_DigitalElevationModel-0.5m.tif")
+# Chiamo l'oggetto per visualizzarne le informazioni
+dsm_2013
+
+# Utilizzo la funzione "raster" per importare il dtm 2013
+dtm_2013 <- raster("2013Elevation_DigitalTerrainModel-0.5m.tif")
+# Chiamo l'oggetto per visualizzarne le informazioni
+dtm_2013
+
+# Faccio un plot del dtm 2013
+plot(dtm_2013)
+
+# Faccio il chm del 2013 come differenza del dsm e del dtm
+chm_2013 <- dsm_2013-dtm_2013
+# Chiamo l'oggetto per visualizzarne le informazioni
+chm_2013 
+
+# Faccio il plot del chm 2013 con la legenda viridis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+ggplot() + 
+geom_raster(chm_2013, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis() +
+ggtitle("CHM 2013 San Genesio/Jenesien")
+
+# Utilizzo la funzione "raster" per importare il dsm 2004
+dsm_2004 <- raster("2004Elevation_DigitalElevationModel-2.5m.tif")
+# Chiamo l'oggetto per visualizzarne le informazioni
+dsm_2004
+
+# Utilizzo la funzione "raster" per importare il dtm 2004
+dtm_2004 <- raster("2004Elevation_DigitalTerrainModel-2.5m.tif")
+# Chiamo l'oggetto per visualizzarne le informazioni
+dtm_2004
+
+# Faccio il chm del 2004 come differenza del dsm e del dtm
+chm_2004 <- dsm_2004 - dtm_2004
+# Chiamo l'oggetto per visualizzarne le informazioni
+chm_2004
+
+# Faccio il plot del chm 2004 con la legenda viridis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+ggplot() + 
+geom_raster(chm_2004, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis() +
+ggtitle("CHM 2004 San Genesio/Jenesien")
+
+# Cambio la risoluzione del chm 2013 per poter fare la differenza tra i due chm
+# Lo faccio attraverso il ricampionamento dell'immagine
+chm_2013_r <- resample(chm_2013, chm_2004)
+
+# Confronto i due chm 
+diffchm <- chm_2013_r - chm_2004
+# Chiamo l'oggetto per visualizzarne le informazioni
+diffchm
+
+# Faccio il plot del diffchm con la legenda viridis
+# Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
+ggplot() + 
+geom_raster(diffchm, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis() +
+ggtitle("CHM difference San Genesio/Jenesien")
+
+# Utilizzo la funzione "readLAS" per importare il point_cloud
+point_cloud <- readLAS("point_cloud.laz")
+
+# Faccio un plot del point cloud
+plot(point_cloud)
+
 
 
 
 #---------------------------------------------------
 
-
-
-
-#---------------------------------------------------
-
+# 11.
 
 
 
 
 #---------------------------------------------------
 
+# 12.
 
 
 
 
 #---------------------------------------------------
 
-
-
+# 13.
 
 
 
