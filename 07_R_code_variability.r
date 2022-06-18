@@ -1,4 +1,5 @@
 # Questo è il settimo script che useremo a lezione
+# R_code_variability.r
 
 # Carico il pacchetto raster
 library(raster)
@@ -40,7 +41,7 @@ g1+g2 # Thanks to patchwork!
 # Calcolo la variabilità dell'immagine
 # La calcolo sul NIR (primo elemento)
 nir <- sen[[1]]
-# Per fare il calcolo utilizzo la funzione focal ed usando una finestra 3x3
+# Per fare il calcolo della variabilità utilizzo la funzione focal ed utilizzo una finestra di 3x3 pixels
 sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd) # la funzione è basata sulla deviazione standard
 
 # Plotto l'immagine della variabilità
@@ -48,11 +49,14 @@ sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd) # la funzione è basata sulla devia
 clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
 plot(sd3, col=clsd)
 dev.off()
+ 
 
 # Faccio un plot con ggplot
 # Apro un ggplot vuoto e gli aggiungo la funzione geom_raster
 ggplot() + 
 geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer))
+
+# # A seguire, è stato eseguito lo stesso plot con tre legende differenti estratte dal pacchetto viridis
 
 # Faccio un plot con la legenda viridis
 # Apro un ggplot vuoto e gli aggiungo la funzione geom_raster...
