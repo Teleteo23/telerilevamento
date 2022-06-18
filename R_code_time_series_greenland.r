@@ -10,7 +10,7 @@ library(raster)
 library(rgdal)
 # Installo il pacchetto rasterVis
 #install.packages("rasterVis")
-# Carico il pacchetto rasterVis per...
+# Carico il pacchetto rasterVis che implementa metodi per una maggiore visualizzazione e interazione dei dati raster
 library(rasterVis)
 
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
@@ -30,7 +30,7 @@ Lst_2015
 
 # Plotto l'immagine del 2000
 plot(Lst_2000)
-#dev.off()
+dev.off()
 
 # Costruisco un multiframe con le 4 immagini
 # Creo una nuova scala colori per miglirare la visualizzazione
@@ -40,7 +40,7 @@ plot(Lst_2000, col=cl)
 plot(Lst_2005, col=cl)
 plot(Lst_2010, col=cl)
 plot(Lst_2015, col=cl)
-#dev.off()
+dev.off()
 
 # Metodo per importare contemporaneamente tutte le immagini 
 # Creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
