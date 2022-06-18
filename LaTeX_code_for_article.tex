@@ -1,0 +1,119 @@
+% i commenti si fanno con la percentuale
+\documentclass[a4paper,12pt]{article} %classe utilizzata per specificare il tipo di documento
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} % pacchetto per parti grafiche
+% con le parentesi quadre si mettono gli imput
+\usepackage{color}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{listings}
+\usepackage{setspace}
+
+\newcommand{\tr}{\textcolor{red}}
+
+\title{Il mio primo documento in LaTeX}
+\author{Matteo Barbero}
+\date{2022/2023} %commentando la data viene messa in automatico prendendola dal pc
+
+\begin{document} % alla fine di tutto si deve mettere un "end"
+
+\maketitle
+\doublespacing
+\tableofcontents
+
+\begin{abstract}
+Here is the abstract of my Master Thesis.
+
+The Master Thesis is dealing with something.
+
+Concluding, I made beautiful science.
+\end{abstract}
+
+\noindent \textbf{Keywords}: biodiversity; Brenta chain; geology; remote sensing; spatial ecology; statistics
+
+\section{Introduction}\label{sec:intro}
+
+Since the 1920s, \textcolor{red}{aerial photography} has represented an important data source for the detection of landscape patterns and their change over time. \\
+
+% \smallskip
+% \bigskip
+
+Multitemporal analysis represents a powerful method for the study of all ecological and geological processes that change over time. The literature involves several fields of study: from soil loss to natural resources assessment to vegetation and ecological dynamics.
+
+\section{Area di studio}
+
+The study area is the nature reserve of Poggio all’Olmo in Tuscany (Figure \ref{fig:topsoil}), Italy (11 28 26E, 42 51 45N, WGS84 Datum). It is located on the side of Mt. Amiata,
+comprising 440 ha, with elevations ranging from 650 to 1016 m above mean sea level (m.s.l.) and slopes from 0 to 55
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{Confronto topsoil.png}
+\caption{grafico.}
+\label{fig:topsoil}
+\end{figure}
+
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Confronto topsoil.png}
+        \caption{Caption}
+        \label{fig:my_label}
+\end{figure}
+
+\section{Metodi}
+
+Sono divise in:
+\begin{itemize}
+    \item The formulas
+    \item The code
+\end{itemize}
+
+\begin{enumerate}
+    \item formule
+    \item codice
+\end{enumerate}
+
+\subsection{formule}
+equation \ref{eq:newton}
+\begin{equation}
+   F = G \times \frac{m_{1} \times m_{2}}{d^{2} \times}
+   \label{eq:newton}
+\end{equation}
+
+\begin{equation}
+    F = \sqrt{G \times \frac{m_{1} \times m_{2}}{d^{2}}}
+\end{equation}
+
+\begin{equation}
+     F = \frac{\sqrt[3]{G \times \frac{m_{1} \times m_{2}}{d^{2}}}}{-\sum{p(x) \times \log{p(x)}}}
+\end{equation}
+\subsection{codice}
+
+\lstinputlisting[language=R]{Script1.r}
+
+\section{Risultati}
+
+As a result of this study I found that the Cadmium is present in the analyzed soil with a total amount of 15\%.
+Let's put a formula directly in the main text. We can apply this: $F=G \times m_{1}$. These results were achieved according to Equation \ref{eq:newton}.
+
+\section{Discussioni}
+
+Come detto nella sezione \ref{sec:intro}
+
+Come detto da \citep{Revell_2012, Potts_2022}
+
+Spiegato in \citep{Massatti_2022}
+
+\begin{thebibliography}{999}
+\bibitem[Revell(2012)]{Revell_2012}
+Revell, L.J. (2012), phytools: an R package for phylogenetic comparative biology (and other things). Methods in Ecology and Evolution, 3: 217-223. \url{https://doi.org/10.1111/j.2041-210X.2011.00169.x}
+
+\bibitem[Massatti and Winkler(2022)]{Massatti_2022}
+Massatti, R. and Winkler, D.E. (2022), Spatially explicit management of genetic diversity using ancestry probability surfaces. Methods Ecol Evol. Accepted Author Manuscript. \url{https://doi.org/10.1111/2041-210X.13902}
+
+\bibitem[Potts et al.(2022)]{Potts_2022}
+Potts, J.R., Börger, L., Strickland, B.K. and Street, G.M. (2022), Assessing the predictive power of step selection functions: how social and environmental interactions affect animal space use. Methods Ecol Evol. Accepted Author Manuscript. \url{https://doi.org/10.1111/2041-210X.13904}
+
+\end{thebibliography}
+
+\end{document}
