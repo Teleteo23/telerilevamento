@@ -1,4 +1,5 @@
 # Questo è il nono script che useremo a lezione
+# R_code_variability2.r
 
 # Carico il pacchetto raster
 library(raster)
