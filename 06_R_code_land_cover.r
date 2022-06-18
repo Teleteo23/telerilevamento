@@ -1,4 +1,5 @@
 # Questo è il sesto script che useremo a lezione
+# R_code_land_cover.r
 
 # Carico il pacchetto raster
 library(raster)
@@ -24,7 +25,8 @@ L92 <- brick("defor1.jpg")
 # Chiamo l'oggetto per visualizzarne le informazioni
 L92
 
-# Essendo un immagine RGB, faccio un plot RGB 
+# Essendo un immagine RGB, faccio un plot RGB
+# Faccio il plot con le due tipologie di stretch
 # NIR 1, RED 2, GREEN 3
 plotRGB(L92, 1, 2, 3, stretch="lin")
 plotRGB(L92, 1, 2, 3, stretch="hist")
@@ -47,6 +49,7 @@ dev.off()
 # Faccio un plot RGB, utilizzando ggplot2, delle due immagini 
 ggRGB(L92, 1, 2, 3, stretch="lin")
 ggRGB(L06, 1, 2, 3, stretch="lin")
+dev.off()
 
 # Creo un multiframe utilizzando ggplot2 e patchwork
 # Assegno a due variabili i plot ggRGB delle due immagini
@@ -125,13 +128,13 @@ perc_agr06
 # Percentuale della porzione agricola: 47.85951
 
 # DATI FINALI:
-# Percentuale della foresta 92: 89.95845
-# Percentuale della porzione agricola 92: 10.04155
-# Percentuale della foresta 06: 52.14049
-# Percentuale della porzione agricola 06: 47.85951
+# Percentuale della foresta 1992: 89.95845
+# Percentuale della porzione agricola 1992: 10.04155
+# Percentuale della foresta 2006: 52.14049
+# Percentuale della porzione agricola 2006: 47.85951
 
 # Creo un data frame con tre colonne
-# La prima colonna sarà la classe, la seconda i valori percentuali del 92 e la terza i valori percentuali del 06
+# La prima colonna sarà la classe, la seconda i valori percentuali del 1992 e la terza i valori percentuali del 2006
 class <- c("Forest","Agriculture")
 percent_1992 <- c(89.95, 10.05)
 percent_2006 <- c(52.15, 47.85)
@@ -139,7 +142,7 @@ multitemporal <- data.frame(class, percent_1992, percent_2006)
 multitemporal
 View(multitemporal)
 
-# Plotto il data frame
+# Plotto il data frame creando un immagine a istogrammi
 PL1 <- ggplot(multitemporal, aes(x=class, y=percent_1992, color=class)) + geom_bar(stat="identity", fill="black")
 PL2 <- ggplot(multitemporal, aes(x=class, y=percent_2006, color=class)) + geom_bar(stat="identity", fill="white")
 grid.arrange(PL1, PL2, nrow=1)
