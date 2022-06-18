@@ -23,7 +23,7 @@ species
 # Faccio un plot della specie
 plot(species, pch=19)
 
-# Visualizzo le occurence della specie
+# Assegno ad un oggetto le occurence della specie e lo chiamo per visualizzarlo
 occ <- species$Occurrence
 occ
 
