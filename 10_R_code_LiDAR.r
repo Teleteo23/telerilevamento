@@ -1,4 +1,5 @@
 # Questo è il decimo script che useremo a lezione
+# R_code_LiDAR.r
 
 # Carico il pacchetto raster
 library(raster) #"Geographic Data Analysis and Modeling"
