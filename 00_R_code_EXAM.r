@@ -1,5 +1,5 @@
 # R_code_EXAM.r
-# Questo è lo script utilizzato per il progetto finale del corso di Telerilevamento Geo-Ecologico
+# Questo è lo script utilizzato per il progetto finale del corso di Telerilevamento Geo-Ecologico A.A. 2021-2022
 
 
 # Carico il pacchetto raster
@@ -14,7 +14,9 @@ library(gridExtra)
 # Setto la cartella dei dati di lavoro (scelgo un percorso molto breve)
 setwd("C:/lab/Esame") # Percorso per Windows users
 
-## Importo le immagini di partenza del 1984 e del 2022
+#-----------------------------------------------------------------------
+
+#-Importo le immagini di partenza del 1984 e del 2022-
 # Per 'importazione delle immagini utilizzo uno stack
 
 # 1984
@@ -22,12 +24,15 @@ setwd("C:/lab/Esame") # Percorso per Windows users
 # Inizialmente creo una lista di files utilizzando la funzione "list.files" e la assegno ad un oggetto
 # "pattern" ricerca all'interno della cartella di lavoro tutti i file con all'interno del nome una parte comune
 list1984 <- list.files(pattern="1984_B")  
+
 # Applico la funzione "raster" alla lista utilizzando un'altra funzione chiamata "lapply" e la assegno ad un oggetto
 import1984 <- lapply(list1984, raster) 
+
 # Infine, creo un singolo file, unendo le 13 immagini, utilizzando la funzione "stack" e lo assegno ad un oggetto
 I1984<-stack(import1984)# tramite la funzione "stack" unisco le componenti della lista in un unico file
 # Visualizzo il nuovo file
 I1984
+
 # Plotto il nuovo file
 plot(I1984)
 # Faccio un plotRGB del file e metto la banda dell'infrarosso vicino sul RED, la banda del rosso sul GREEN e la banda del verde sul BLUE
@@ -71,14 +76,16 @@ H2022
 plot(H2022)
 plotRGB(H2022, 1, 2, 3)
 
+#-----------------------------------------------------------------------
 
-## Calcolo degl'indici spettrali
+#-Calcolo degl'indici spettrali-
 # DVI
 
 # Calcolo il difference vegetation index(DVI)(differenza tra le riflettanze nel NIR e nel rosso)
 dvi1<- H1984$H1984.1 - H1984$H1984.2
 # Chiamo l'oggetto per visualizzarne le informazioni
 dvi1
+
 # Creo una nuova scala colori per miglirare la visualizzazione
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 # Plotto il DVI del 1984 con la nuova scala colori
@@ -100,6 +107,9 @@ plot(dvi2, col=cl)
 
 # Calcolo la differenza del DVI nel tempo
 difdvi<- dvi1-dvi2
+# Chiamo l'oggetto per visualizzarne le informazioni
+difdvi
+
 # Creo una nuova scala colori e plotto la differenza del DVI calcolata
 cld <- colorRampPalette(c('blue','white','red'))(100) 
 plot(difdvi,col=cld)
@@ -131,13 +141,13 @@ plot(difdvi, col=cld)
 dev.off()
 
 
-
 # NDVI
 # Calcolo il normalized difference vegetation index(NDVI)(rapporto tra la differenza e la somma tra le riflettanze nel NIR e nel rosso)
 #(NIR-RED)/(NIR+RED)
 ndvi1<-(dvi1)/(H1984$H1984.1 + H1984$H1984.2)
 # Chiamo l'oggetto per visualizzarne le informazioni
 ndvi1
+
 # Plotto l'NDVI del 1984 con la scala colori utilizzata per il DVI
 plot(ndvi1,col=cl)
 
@@ -148,13 +158,16 @@ plot(ndvi2,col=cl)
 
 # Il range del NDVI a 8 bit va da -1 a 1
 
-# Creo un multiframe con il DVI del 1984 e del 2022
+# Creo un multiframe con l'NDVI del 1984 e del 2022
 par(mfrow=c(2,1))
 plot(ndvi1, col=cl)
 plot(ndvi2, col=cl)
 
-# Calcolo la differenza del DVI nel tempo
+# Calcolo la differenza dell'NDVI nel tempo
 difndvi<-ndvi1-ndvi2
+# Chiamo l'oggetto per visualizzarne le informazioni
+difndvi
+
 # Plotto la differenza dell'NDVI con la scala colori utilizzata per la differenza DVI
 plot(difndvi,col=cld)
 
@@ -182,9 +195,9 @@ jpeg("difndvi.jpg", 600, 400)
 plot(difndvi,col=cld)
 dev.off()
 
+#-----------------------------------------------------------------------
 
-
-## Classificazione
+#-Classificazione-
 
 # Classifico l'immagine del 1984 sulla base alla riflettanza di ogni pixel dell'immagine sia nella banda del rosso che dell'infrarosso vicino
 # Per farlo utilizzo la funzione "unsuperClass" indicando il numero di classi che voglio e la assegno ad un oggetto (in questo caso sno state utilizzate 4 classi)
@@ -196,6 +209,7 @@ class1984
 # 2. Foresta
 # 3. Agricoltura 
 # 4. Acqua
+
 # Plotto l'immagine classificata legandola alla mappa creata durante la classificazione
 # Creo una nuova scala colori per miglirare la visualizzazione
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
@@ -240,10 +254,12 @@ freq(class2022$map)
 # Classe 4: 65647
 
 # Calcolo il numero di pixels totali per le due immagini e visualizzo i risultati
+# 1984
 tot1984 <- 38511 + 57738 + 75576 + 63787
 tot1984
 # 235612
 
+# 2022
 tot2022 <- 65647 + 27517 + 67325 + 76116
 tot2022
 # 236605
