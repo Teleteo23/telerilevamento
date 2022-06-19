@@ -301,15 +301,14 @@ View(Tab.perc)
 # Con la funzione "write.table" esporto il dataframe in formato "csv" 
 write.table(Tab.perc, "Tab.perc.csv", sep = ",")
 
-# Plotto il data frame creando un immagine a istogrammi
-#
+# Plotto il data frame creando due immagini a istogrammi
+# Salvo in due variabili le due immagini create attraverso la funzione "ggplot" + la funzione "geom_bar"
 PL1 <- ggplot(Tab.perc, aes(x=class, y=percent_1984, fill=class)) + geom_bar(stat="identity")
 PL2 <- ggplot(Tab.perc, aes(x=class, y=percent_2022, fill=class)) + geom_bar(stat="identity")
-#
+# Attraverso la funzione "grid.arrange" plotto le due immagini nella stessa pagina
 grid.arrange(PL1, PL2, nrow=1)
 
-#
+# Esporto il grid.arrange come file ".jpg" e lo salvo nella mia cartella di lavoro 
 jpeg("histo.jpg", 800, 500)
 grid.arrange(PL1, PL2, nrow=1)
 dev.off()
-
